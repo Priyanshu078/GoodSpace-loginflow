@@ -1,20 +1,24 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:goodspacelogin/constants/colors.dart';
+import 'package:goodspacelogin/login/bloc/login_bloc.dart';
+import 'package:goodspacelogin/login/bloc/login_event.dart';
+import 'package:goodspacelogin/login/bloc/login_state.dart';
+import 'package:goodspacelogin/login/verifyotp_page.dart';
 import 'package:goodspacelogin/widgets/mybutton.dart';
+import 'package:goodspacelogin/widgets/mytext.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class GetOtpPage extends StatefulWidget {
+  const GetOtpPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<GetOtpPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<GetOtpPage> {
   final TextEditingController _textEditingController = TextEditingController();
 
   List<Widget> getCarouselItems(double height, double width) {
@@ -136,6 +140,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
@@ -209,76 +219,138 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        Container(
-                          height: height * 0.07,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: textFieldBackground,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: borderColor, width: 1)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset("assets/images/flag.png"),
-                              SizedBox(
-                                width: width * 0.03,
-                              ),
-                              VerticalDivider(
-                                width: 1,
-                                color: borderColor,
-                              ),
-                              SizedBox(
-                                width: width * 0.03,
-                              ),
-                              SizedBox(
-                                  width: width * 0.7,
-                                  child: TextField(
-                                    controller: _textEditingController,
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal),
-                                    decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.only(bottom: 12),
-                                        hintText: "Please enter mobile no.",
-                                        hintStyle: GoogleFonts.poppins(
+                        BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                            return Container(
+                              height: height * 0.07,
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: textFieldBackground,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                      color: state is WrongNumberState
+                                          ? wrongNumberColor
+                                          : borderColor,
+                                      width: 1)),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset("assets/images/flag.png"),
+                                  SizedBox(
+                                    width: width * 0.03,
+                                  ),
+                                  VerticalDivider(
+                                    width: 1,
+                                    color: state is WrongNumberState
+                                        ? wrongNumberColor
+                                        : borderColor,
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.03,
+                                  ),
+                                  SizedBox(
+                                      width: width * 0.7,
+                                      child: TextField(
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                          LengthLimitingTextInputFormatter(10),
+                                        ],
+                                        keyboardType: TextInputType.number,
+                                        controller: _textEditingController,
+                                        style: GoogleFonts.poppins(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.normal,
-                                            color: secondaryOnbardingColor),
-                                        border: InputBorder.none),
-                                  ))
-                            ],
-                          ),
+                                            color: state is WrongNumberState
+                                                ? wrongNumberColor
+                                                : Colors.black,
+                                            fontWeight: FontWeight.normal),
+                                        decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.only(
+                                                    bottom: 12),
+                                            hintText: "Please enter mobile no.",
+                                            hintStyle: GoogleFonts.poppins(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal,
+                                                color: secondaryOnbardingColor),
+                                            border: InputBorder.none),
+                                      ))
+                                ],
+                              ),
+                            );
+                          },
                         ),
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        RichText(
-                            text: TextSpan(
-                                text: "You will receive a ",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: secondaryOnbardingColor,
-                                ),
-                                children: [
-                              TextSpan(
-                                  text: "4 digit OTP",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
+                        BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                            return state is WrongNumberState
+                                ? MyText(
+                                    text: "Enter Correct Phone Number",
+                                    fontSize: 12,
+                                    color: wrongNumberColor,
                                     fontWeight: FontWeight.normal,
-                                    color: themeColor,
-                                  ))
-                            ])),
+                                  )
+                                : RichText(
+                                    text: TextSpan(
+                                        text: "You will receive a ",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                          color: secondaryOnbardingColor,
+                                        ),
+                                        children: [
+                                        TextSpan(
+                                            text: "4 digit OTP",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              color: themeColor,
+                                            ))
+                                      ]));
+                          },
+                        ),
                         SizedBox(
                           height: height * 0.06,
                         ),
-                        MyButton(
-                            text: "Get OTP",
-                            onPressed: () {},
-                            height: height,
-                            width: width),
+                        BlocConsumer<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            if (state is OtpSentState) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VerifyOtpPage()));
+                            }
+                          },
+                          builder: (context, state) {
+                            return state is RequestOtpState
+                                ? const Align(
+                                    alignment: Alignment.center,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                      strokeWidth: 1,
+                                    ),
+                                  )
+                                : MyButton(
+                                    text: "Get OTP",
+                                    onPressed: () {
+                                      String number = _textEditingController
+                                          .text
+                                          .toString();
+                                      String countryCode = "+91";
+                                      context
+                                          .read<LoginBloc>()
+                                          .add(SendOtpEvent(
+                                            number: number,
+                                            countryCode: countryCode,
+                                          ));
+                                    },
+                                    height: height,
+                                    width: width);
+                          },
+                        ),
                         SizedBox(
                           height: height * 0.02,
                         ),
