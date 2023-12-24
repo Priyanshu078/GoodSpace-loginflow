@@ -27,8 +27,27 @@ class OtpLogin {
     print(jsonData);
   }
 
-  Future<void> verifyOtp() async {
+  Future<void> verifyOtp(String number, String otp) async {
+    var dio = Dio();
     String endPoint = "/api/d2/auth/verifyotp";
     String url = BASEURL + endPoint;
+    var response = await dio.post(
+      url,
+      options: Options(headers: {
+        "Authorization":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsImlhdCI6MTYyMjYwNDY4MH0.ZQxGVUbEZFpSyRYNEeTQysh4fNomDM_RS5XUSqx7YyY",
+        "Content-Type": "application/json",
+        "Device-Type": "web",
+        "Device-Id": "2b38f716-9dd4-4a9d-b03a-d0f8872e4b5a"
+      }),
+      data: {
+        "number": number,
+        "otp": otp,
+        "inviteId": null,
+        "utmTracking": null
+      },
+    );
+    var jsonData = response.data;
+    print(jsonData);
   }
 }

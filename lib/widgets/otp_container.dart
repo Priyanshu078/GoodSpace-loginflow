@@ -4,15 +4,15 @@ import 'package:goodspacelogin/constants/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OtpContainer extends StatelessWidget {
-  const OtpContainer({
-    super.key,
-    required this.height,
-    required this.width,
-    required this.textEditingController,
-    required this.color,
-    required this.focusNode,
-    required this.onChanged,
-  });
+  const OtpContainer(
+      {super.key,
+      required this.height,
+      required this.width,
+      required this.textEditingController,
+      required this.color,
+      required this.focusNode,
+      required this.onChanged,
+      required this.bordercolor});
 
   final double height;
   final double width;
@@ -20,6 +20,7 @@ class OtpContainer extends StatelessWidget {
   final Color color;
   final FocusNode focusNode;
   final Function(String value) onChanged;
+  final Color bordercolor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class OtpContainer extends StatelessWidget {
       width: width,
       decoration: BoxDecoration(
           color: color,
-          border: Border.all(width: 1, color: themeColor),
+          border: Border.all(width: 1, color: bordercolor),
           borderRadius: BorderRadius.circular(8)),
       child: SizedBox(
         width: width,

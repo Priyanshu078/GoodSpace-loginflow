@@ -53,3 +53,17 @@ class OtpFillState extends LoginState {
       required super.countryCode,
       required super.otpFilledArray});
 }
+
+class VerifyingOtpState extends LoginState {
+  const VerifyingOtpState(
+      {required super.phoneNumber,
+      required super.countryCode,
+      required super.otpFilledArray});
+}
+
+class OtpVerifiedState extends LoginState {
+  const OtpVerifiedState(
+      {required super.phoneNumber,
+      required super.countryCode,
+      required super.otpFilledArray});
+}

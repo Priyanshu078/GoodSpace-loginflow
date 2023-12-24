@@ -16,6 +16,10 @@ class FillOtpEvent extends LoginEvent {
   final int index;
   final bool filled;
   const FillOtpEvent({required this.index, required this.filled});
-  @override
-  List<Object?> get props => [index, filled];
+}
+
+class VerifyOtpEvent extends LoginEvent {
+  final String number;
+  final String otp;
+  const VerifyOtpEvent({required this.number, required this.otp});
 }

@@ -12,6 +12,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             otpFilledArray: [false, false, false, false])) {
     on<SendOtpEvent>((event, emit) => sendOtp(event, emit));
     on<FillOtpEvent>((event, emit) => fillOtp(event, emit));
+    on<VerifyOtpEvent>((event, emit) => verifyOtp(event, emit));
   }
   final OtpLogin _otpLogin = OtpLogin();
 
@@ -23,6 +24,40 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         phoneNumber: state.phoneNumber,
         countryCode: state.countryCode,
         otpFilledArray: otpFilledArray));
+  }
+
+  Future<void> verifyOtp(VerifyOtpEvent event, Emitter emit) async {
+    emit(VerifyingOtpState(
+      phoneNumber: state.phoneNumber,
+      countryCode: state.countryCode,
+      otpFilledArray: state.otpFilledArray,
+    ));
+    String number = event.number;
+    String otp = event.otp;
+    List<bool> otpArray = state.otpFilledArray;
+    if (otpArray.contains(false)) {
+      emit(ErrorState(
+        phoneNumber: state.phoneNumber,
+        countryCode: state.countryCode,
+        otpFilledArray: state.otpFilledArray,
+      ));
+    } else {
+      try {
+        await _otpLogin.verifyOtp(number, otp);
+        emit(OtpVerifiedState(
+          phoneNumber: state.phoneNumber,
+          countryCode: state.countryCode,
+          otpFilledArray: state.otpFilledArray,
+        ));
+      } catch (e) {
+        print(e);
+        emit(ErrorState(
+          phoneNumber: state.phoneNumber,
+          countryCode: state.countryCode,
+          otpFilledArray: state.otpFilledArray,
+        ));
+      }
+    }
   }
 
   Future<void> sendOtp(SendOtpEvent event, Emitter emit) async {

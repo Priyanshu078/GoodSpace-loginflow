@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:goodspacelogin/bloc_observer.dart';
-import 'package:goodspacelogin/login/verifyotp_page.dart';
+import 'package:goodspacelogin/constants/colors.dart';
+import 'package:goodspacelogin/login/getotp_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'login/bloc/login_bloc.dart';
 
@@ -22,10 +24,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const VerifyOtpPage(),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              selectedLabelStyle: GoogleFonts.poppins(
+                  fontSize: 12, fontWeight: FontWeight.w500, color: themeColor),
+              unselectedLabelStyle: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: secondaryOnbardingColor),
+            )),
+        home: const GetOtpPage(),
       ),
     );
   }
