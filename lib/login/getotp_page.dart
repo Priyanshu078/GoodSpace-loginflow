@@ -9,6 +9,7 @@ import 'package:goodspacelogin/login/bloc/login_state.dart';
 import 'package:goodspacelogin/login/verifyotp_page.dart';
 import 'package:goodspacelogin/widgets/mybutton.dart';
 import 'package:goodspacelogin/widgets/mytext.dart';
+import 'package:goodspacelogin/widgets/textfield_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GetOtpPage extends StatefulWidget {
@@ -221,62 +222,19 @@ class _MyHomePageState extends State<GetOtpPage> {
                         ),
                         BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, state) {
-                            return Container(
-                              height: height * 0.07,
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                  color: textFieldBackground,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                      color: state is WrongNumberState
-                                          ? wrongNumberColor
-                                          : borderColor,
-                                      width: 1)),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset("assets/images/flag.png"),
-                                  SizedBox(
-                                    width: width * 0.03,
-                                  ),
-                                  VerticalDivider(
-                                    width: 1,
-                                    color: state is WrongNumberState
-                                        ? wrongNumberColor
-                                        : borderColor,
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.03,
-                                  ),
-                                  SizedBox(
-                                      width: width * 0.7,
-                                      child: TextField(
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
-                                          LengthLimitingTextInputFormatter(10),
-                                        ],
-                                        keyboardType: TextInputType.number,
-                                        controller: _textEditingController,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 16,
-                                            color: state is WrongNumberState
-                                                ? wrongNumberColor
-                                                : Colors.black,
-                                            fontWeight: FontWeight.normal),
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                                    bottom: 12),
-                                            hintText: "Please enter mobile no.",
-                                            hintStyle: GoogleFonts.poppins(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.normal,
-                                                color: secondaryOnbardingColor),
-                                            border: InputBorder.none),
-                                      ))
-                                ],
-                              ),
+                            return TextfieldContainer(
+                              height: height,
+                              width: width,
+                              borderColor: state is WrongNumberState
+                                  ? wrongNumberColor
+                                  : borderColor,
+                              dividerColor: state is WrongNumberState
+                                  ? wrongNumberColor
+                                  : borderColor,
+                              textEditingController: _textEditingController,
+                              textColor: state is WrongNumberState
+                                  ? wrongNumberColor
+                                  : Colors.black,
                             );
                           },
                         ),

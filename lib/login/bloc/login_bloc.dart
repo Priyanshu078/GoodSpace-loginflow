@@ -13,6 +13,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<SendOtpEvent>((event, emit) => sendOtp(event, emit));
     on<FillOtpEvent>((event, emit) => fillOtp(event, emit));
     on<VerifyOtpEvent>((event, emit) => verifyOtp(event, emit));
+    on<SetToInitailEvent>((event, emit) => emit(LoginInitalState(
+        phoneNumber: state.phoneNumber,
+        countryCode: state.countryCode,
+        otpFilledArray: state.otpFilledArray)));
+    on<ChangeNumberEvent>((event, emit) => emit(LoginInitalState(
+        phoneNumber: event.number,
+        countryCode: state.countryCode,
+        otpFilledArray: state.otpFilledArray)));
   }
   final OtpLogin _otpLogin = OtpLogin();
 

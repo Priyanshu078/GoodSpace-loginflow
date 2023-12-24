@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:goodspacelogin/constants/colors.dart';
-import 'package:goodspacelogin/homepage.dart';
+import 'package:goodspacelogin/homepage/homepage.dart';
 import 'package:goodspacelogin/login/bloc/login_bloc.dart';
 import 'package:goodspacelogin/login/bloc/login_event.dart';
 import 'package:goodspacelogin/login/bloc/login_state.dart';
 import 'package:goodspacelogin/widgets/mybutton.dart';
 import 'package:goodspacelogin/widgets/mytext.dart';
 import 'package:goodspacelogin/widgets/otp_container.dart';
+import 'package:goodspacelogin/widgets/textfield_container.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../homepage/bloc/homepage_bloc.dart';
 
 class VerifyOtpPage extends StatefulWidget {
   const VerifyOtpPage({super.key});
@@ -23,6 +26,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
   final TextEditingController _textEditingController2 = TextEditingController();
   final TextEditingController _textEditingController3 = TextEditingController();
   final TextEditingController _textEditingController4 = TextEditingController();
+  final TextEditingController _textEditingController5 = TextEditingController();
   final FocusNode focusNode1 = FocusNode();
   final FocusNode focusNode2 = FocusNode();
   final FocusNode focusNode3 = FocusNode();
@@ -49,20 +53,121 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset('assets/images/back.png'),
-                        Row(
-                          children: [
-                            MyText(
-                              text: "Edit Phone Number",
-                              fontSize: 14,
-                              color: editColor,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            SizedBox(
-                              width: width * 0.04,
-                            ),
-                            Image.asset('assets/images/pencil.png'),
-                          ],
+                        GestureDetector(
+                          child: Image.asset('assets/images/back.png'),
+                          onTap: () {
+                            context.read<LoginBloc>().add(SetToInitailEvent());
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      backgroundColor: Colors.white,
+                                      surfaceTintColor: Colors.white,
+                                      title: MyText(
+                                        text: "Enter Correct Phone Number",
+                                        fontSize: 20,
+                                        color: textColor1,
+                                        fontWeight: FontWeight.w500,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      contentPadding: EdgeInsets.zero,
+                                      content: Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 16.0, left: 8, right: 8),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(
+                                              height: height * 0.05,
+                                            ),
+                                            TextfieldContainer(
+                                                height: height,
+                                                width: width,
+                                                borderColor: borderColor,
+                                                dividerColor: borderColor,
+                                                textEditingController:
+                                                    _textEditingController5,
+                                                textColor: textColor1),
+                                            SizedBox(
+                                              height: height * 0.02,
+                                            ),
+                                            MyText(
+                                              text:
+                                                  "Please be sure to select the correct area code and enter 10 digits.",
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              color: onboardingTextColor,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(
+                                              height: height * 0.05,
+                                            ),
+                                            BlocConsumer<LoginBloc, LoginState>(
+                                              listener: (context, state) {
+                                                if (state is OtpSentState) {
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                              builder: (context, state) {
+                                                return state is RequestOtpState
+                                                    ? const Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Colors.black,
+                                                          strokeWidth: 1,
+                                                        ),
+                                                      )
+                                                    : MyButton(
+                                                        onPressed: () {
+                                                          context
+                                                              .read<LoginBloc>()
+                                                              .add(ChangeNumberEvent(
+                                                                  number:
+                                                                      _textEditingController5
+                                                                          .text));
+                                                          context
+                                                              .read<LoginBloc>()
+                                                              .add(SendOtpEvent(
+                                                                  number:
+                                                                      _textEditingController5
+                                                                          .text,
+                                                                  countryCode:
+                                                                      "+91"));
+                                                        },
+                                                        height: height,
+                                                        width: width,
+                                                        text: "Verify Phone",
+                                                      );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                          },
+                          child: Row(
+                            children: [
+                              MyText(
+                                text: "Edit Phone Number",
+                                fontSize: 14,
+                                color: editColor,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              SizedBox(
+                                width: width * 0.04,
+                              ),
+                              Image.asset('assets/images/pencil.png'),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -293,7 +398,11 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomePage()),
+                                  builder: (context) => BlocProvider(
+                                        create: (context) =>
+                                            HomePageBloc()..add(GetDataEvent()),
+                                        child: const HomePage(),
+                                      )),
                               (_) => false);
                         }
                       },

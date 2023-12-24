@@ -23,3 +23,10 @@ class VerifyOtpEvent extends LoginEvent {
   final String otp;
   const VerifyOtpEvent({required this.number, required this.otp});
 }
+
+class SetToInitailEvent extends LoginEvent {}
+
+class ChangeNumberEvent extends LoginEvent {
+  final String number;
+  const ChangeNumberEvent({required this.number});
+}
