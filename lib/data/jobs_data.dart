@@ -1,6 +1,6 @@
 class JobsData {
   List<Data>? data;
-  double? status;
+  int? status;
 
   JobsData({data, status});
 
@@ -45,32 +45,32 @@ class Data {
 }
 
 class CardData {
-  double? showOrganisation;
-  double? offerId;
-  double? userId;
+  int? showOrganisation;
+  int? offerId;
+  int? userId;
   String? companyName;
-  double? offerTypeId;
+  int? offerTypeId;
   String? description;
   String? url;
-  double? lowerworkex;
-  double? upperworkex;
+  int? lowerworkex;
+  int? upperworkex;
   String? monthlyCompensation;
   String? hourlyCompensation;
-  double? monthlyCompensationId;
+  int? monthlyCompensationId;
   String? hourlyCompensationId;
-  double? isRemote;
+  int? isRemote;
   String? redirectUrl;
   String? minScore;
   String? minAge;
   String? maxAge;
   String? locationCity;
   double? distance;
-  double? isOrganic;
+  int? isOrganic;
   String? title;
   String? industryTypeId;
   String? industryType;
-  double? jobFunctionId;
-  double? designationId;
+  int? jobFunctionId;
+  int? designationId;
   String? designation;
   String? date;
   bool? hasApplied;
@@ -235,8 +235,8 @@ class CardData {
 }
 
 class Skills {
-  double? offerId;
-  double? skillId;
+  int? offerId;
+  int? skillId;
   String? skill;
 
   Skills({offerId, skillId, skill});
@@ -257,8 +257,8 @@ class Skills {
 }
 
 class JobType {
-  double? offerId;
-  double? jobTypeId;
+  int? offerId;
+  int? jobTypeId;
   String? jobType;
 
   JobType({offerId, jobTypeId, jobType});
@@ -279,10 +279,10 @@ class JobType {
 }
 
 class UserInfo {
-  double? userId;
+  int? userId;
   String? name;
   String? imageId;
-  double? score;
+  dynamic score;
   bool? isProfileVerified;
 
   UserInfo({userId, name, imageId, score, isProfileVerified});

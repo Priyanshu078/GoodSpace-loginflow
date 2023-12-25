@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:goodspacelogin/constants/colors.dart';
 import 'package:goodspacelogin/homepage/bloc/homepage_bloc.dart';
+import 'package:goodspacelogin/widgets/mybutton.dart';
 import 'package:goodspacelogin/widgets/mytext.dart';
+import 'package:goodspacelogin/widgets/perks_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -73,168 +75,367 @@ class _HomePageState extends State<HomePage> {
                       color: themeColor,
                     ),
                   )
-                : Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                : SingleChildScrollView(
+                    child: SizedBox(
+                      height: height * 0.9,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
                               children: [
-                                Image.asset("assets/images/gold_diamond.png"),
                                 SizedBox(
-                                  width: width * 0.02,
+                                  height: height * 0.01,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                        "assets/images/gold_diamond.png"),
+                                    SizedBox(
+                                      width: width * 0.02,
+                                    ),
+                                    MyText(
+                                      text: "Step into the future",
+                                      fontSize: 14,
+                                      color: textColor1,
+                                      fontWeight: FontWeight.w600,
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                SizedBox(
+                                  height: height * 0.15,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          state.productNameData.data!.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16.0),
+                                          child: Container(
+                                            height: height * 0.15,
+                                            width: width * 0.4,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color: themeColor)),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 30,
+                                                  backgroundImage: AssetImage(
+                                                      recruiterList[index]
+                                                          ["url"]!),
+                                                ),
+                                                SizedBox(
+                                                  height: height * 0.01,
+                                                ),
+                                                MyText(
+                                                  text: state
+                                                      .productNameData
+                                                      .data![index]
+                                                      .displayName!,
+                                                  fontSize: 10,
+                                                  color: textColor1,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                MyText(
+                                                  text: state
+                                                      .productNameData
+                                                      .data![index]
+                                                      .productName!,
+                                                  fontSize: 12,
+                                                  color: themeColor,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
                                 ),
                                 MyText(
-                                  text: "Step into the future",
+                                  text: "Jobs for you",
                                   fontSize: 14,
-                                  color: textColor1,
+                                  color: themeColor,
                                   fontWeight: FontWeight.w600,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Divider(
+                            color: themeColor,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, top: 16, right: 16),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: height * 0.07,
+                                  decoration: BoxDecoration(
+                                      color: textFieldBackground,
+                                      border: Border.all(color: borderColor),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.asset(
+                                            "assets/images/search.png"),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.8,
+                                        child: TextField(
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: textColor1,
+                                          ),
+                                          controller: _textEditingController,
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.zero,
+                                            border: InputBorder.none,
+                                            hintText: "Search Jobs",
+                                            hintStyle: GoogleFonts.poppins(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: secondaryOnbardingColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.45,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: state.jobsData.data!.length,
+                                      itemBuilder: ((context, index) {
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(16),
+                                            height: height * 0.3,
+                                            width: width,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: borderColor),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Flexible(
+                                                      child: MyText(
+                                                        text: state
+                                                            .jobsData
+                                                            .data![index]
+                                                            .cardData!
+                                                            .title!
+                                                            .toString(),
+                                                        fontSize: 18,
+                                                        color: textColor1,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {},
+                                                      child: Image.asset(
+                                                          "assets/images/share.png"),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    MyText(
+                                                      text: state
+                                                          .jobsData
+                                                          .data![index]
+                                                          .cardData!
+                                                          .companyName!
+                                                          .toString(),
+                                                      fontSize: 12,
+                                                      color: textColor1,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                    MyText(
+                                                      text: state
+                                                          .jobsData
+                                                          .data![index]
+                                                          .cardData!
+                                                          .postedAtRelative!
+                                                          .toString(),
+                                                      fontSize: 12,
+                                                      color: textColor1,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: MyText(
+                                                    text: state
+                                                        .jobsData
+                                                        .data![index]
+                                                        .cardData!
+                                                        .locationCity!
+                                                        .toString(),
+                                                    fontSize: 12,
+                                                    color: textColor1,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    PerksContainer(
+                                                        height: height * 0.05,
+                                                        width: width * 0.25,
+                                                        backgroundColor:
+                                                            salaryBackground,
+                                                        borderColor:
+                                                            salaryBorderColor,
+                                                        image:
+                                                            "assets/images/rupee.png",
+                                                        text: state
+                                                            .jobsData
+                                                            .data![index]
+                                                            .cardData!
+                                                            .displayCompensation!,
+                                                        textColor:
+                                                            salaryBorderColor),
+                                                    SizedBox(
+                                                      width: width * 0.03,
+                                                    ),
+                                                    PerksContainer(
+                                                        height: height * 0.05,
+                                                        width: width * 0.25,
+                                                        backgroundColor:
+                                                            expBackgroundColor,
+                                                        borderColor:
+                                                            expBorderColor,
+                                                        image:
+                                                            "assets/images/star.png",
+                                                        text:
+                                                            "${state.jobsData.data![index].cardData!.lowerworkex!} - ${state.jobsData.data![index].cardData!.upperworkex!} Years",
+                                                        textColor:
+                                                            expBorderColor),
+                                                    SizedBox(
+                                                      width: width * 0.03,
+                                                    ),
+                                                    PerksContainer(
+                                                        height: height * 0.05,
+                                                        width: width * 0.25,
+                                                        backgroundColor:
+                                                            jobTypeBackground,
+                                                        borderColor:
+                                                            jobTypeBorderColor,
+                                                        image:
+                                                            "assets/images/briefcase.png",
+                                                        text: state
+                                                            .jobsData
+                                                            .data![index]
+                                                            .cardData!
+                                                            .jobType![0]
+                                                            .jobType!,
+                                                        textColor:
+                                                            jobTypeBorderColor)
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: width * 0.4,
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          CircleAvatar(
+                                                            radius: 25,
+                                                            backgroundImage:
+                                                                NetworkImage(state
+                                                                    .jobsData
+                                                                    .data![
+                                                                        index]
+                                                                    .cardData!
+                                                                    .userInfo!
+                                                                    .imageId!),
+                                                          ),
+                                                          SizedBox(
+                                                              width: width *
+                                                                  0.015),
+                                                          Flexible(
+                                                            child: MyText(
+                                                              text: state
+                                                                  .jobsData
+                                                                  .data![index]
+                                                                  .cardData!
+                                                                  .userInfo!
+                                                                  .name!
+                                                                  .toString(),
+                                                              fontSize: 12,
+                                                              color: textColor1,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    MyButton(
+                                                        onPressed: () {},
+                                                        height: height * 0.8,
+                                                        width: width * 0.4,
+                                                        text: "Apply")
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })),
                                 )
                               ],
                             ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            SizedBox(
-                              height: height * 0.15,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.productNameData.data!.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 16.0),
-                                      child: Container(
-                                        height: height * 0.15,
-                                        width: width * 0.4,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            border: Border.all(
-                                                width: 1, color: themeColor)),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 30,
-                                              backgroundImage: AssetImage(
-                                                  recruiterList[index]["url"]!),
-                                            ),
-                                            SizedBox(
-                                              height: height * 0.01,
-                                            ),
-                                            MyText(
-                                              text: state.productNameData
-                                                  .data![index].displayName!,
-                                              fontSize: 10,
-                                              color: textColor1,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            MyText(
-                                              text: state.productNameData
-                                                  .data![index].productName!,
-                                              fontSize: 12,
-                                              color: themeColor,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                            ),
-                            SizedBox(
-                              height: height * 0.035,
-                            ),
-                            MyText(
-                              text: "Jobs for you",
-                              fontSize: 14,
-                              color: themeColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Divider(
-                        color: themeColor,
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 16, top: 16, right: 16),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: height * 0.07,
-                              decoration: BoxDecoration(
-                                  color: textFieldBackground,
-                                  border: Border.all(color: borderColor),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child:
-                                        Image.asset("assets/images/search.png"),
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.8,
-                                    child: TextField(
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        color: textColor1,
-                                      ),
-                                      controller: _textEditingController,
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.zero,
-                                        border: InputBorder.none,
-                                        hintText: "Search Jobs",
-                                        hintStyle: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: secondaryOnbardingColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ListView.builder(
-                                itemCount: state.jobsData.data!.length,
-                                itemBuilder: ((context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 16.0),
-                                    child: Container(
-                                      height: height * 0.25,
-                                      width: width,
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: borderColor),
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }))
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   );
           },
         ),
