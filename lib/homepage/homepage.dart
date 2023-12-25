@@ -226,14 +226,15 @@ class _HomePageState extends State<HomePage> {
                                   height: height * 0.45,
                                   child: ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: state.jobsData.data!.length,
+                                      itemCount:
+                                          state.jobsData.data!.length - 1,
                                       itemBuilder: ((context, index) {
                                         return Padding(
                                           padding:
                                               const EdgeInsets.only(top: 8.0),
                                           child: Container(
                                             padding: const EdgeInsets.all(16),
-                                            height: height * 0.3,
+                                            height: height * 0.35,
                                             width: width,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
@@ -255,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                                                             .jobsData
                                                             .data![index]
                                                             .cardData!
-                                                            .title!
+                                                            .title
                                                             .toString(),
                                                         fontSize: 18,
                                                         color: textColor1,
@@ -275,17 +276,20 @@ class _HomePageState extends State<HomePage> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    MyText(
-                                                      text: state
-                                                          .jobsData
-                                                          .data![index]
-                                                          .cardData!
-                                                          .companyName!
-                                                          .toString(),
-                                                      fontSize: 12,
-                                                      color: textColor1,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                    SizedBox(
+                                                      width: width * 0.4,
+                                                      child: MyText(
+                                                        text: state
+                                                            .jobsData
+                                                            .data![index]
+                                                            .cardData!
+                                                            .companyName!
+                                                            .toString(),
+                                                        fontSize: 12,
+                                                        color: textColor1,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
                                                     ),
                                                     MyText(
                                                       text: state
@@ -309,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                                                         .jobsData
                                                         .data![index]
                                                         .cardData!
-                                                        .locationCity!
+                                                        .locationCity
                                                         .toString(),
                                                     fontSize: 12,
                                                     color: textColor1,
